@@ -27,7 +27,7 @@ public class Login extends JFrame{
     JLabel pass_label;
     JPanel login;
     static String name;
-    static BufferedImage background;
+    BufferedImage background;
     Login(){
         super("Login");
         try {
@@ -36,32 +36,33 @@ public class Login extends JFrame{
             e.printStackTrace();
         }
         setSize(new Dimension(550,350));
-        start = System.nanoTime()/1000000;
         setContentPane(login = new JPanel(null){
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 Graphics2D g2d = (Graphics2D)g;
-                timer = new Timer(10,(e) -> {
-                    time = System.nanoTime()/1000000 - start;
-                    alpha = time/300;
-                    System.out.println(start);
-                    System.out.println(alpha);
-                    if (alpha >= 1){
-                        System.out.println("a");
-                        timer.stop();
-
-                    }
-                    g2d.setComposite(AlphaComposite.SrcOver.derive(1));
-                    g2d.drawImage(background,0,0,550,350,null);
-                });
-                timer.start();
+                g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,alpha));
+                g2d.drawImage(background,0,0,550,350,null);
             }
         });
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
-        user = new JTextField();
-        pass = new JPasswordField();
+        user = new JTextField(){
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2d = (Graphics2D)g;
+                g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,0.7f));
+                super.paintComponent(g);
+            }
+        };
+        pass = new JPasswordField(){
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2d = (Graphics2D)g;
+                g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,0.7f));
+                super.paintComponent(g);
+            }
+        };
         user_label = new JLabel("User ID : ");
         pass_label = new JLabel("Password : ");
         user_label.setForeground(Color.WHITE);
@@ -70,8 +71,7 @@ public class Login extends JFrame{
             @Override
             protected void paintComponent(Graphics g) {
                 Graphics2D g2d = (Graphics2D)g;
-
-                g2d.setComposite(AlphaComposite.SrcOver.derive((float) 0.8));
+                g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,alpha));
                 super.paintComponent(g2d);
             }
         };
@@ -97,7 +97,7 @@ public class Login extends JFrame{
             @Override
             protected void paintComponent(Graphics g) {
                 Graphics2D g2d = (Graphics2D)g;
-                g2d.setComposite(AlphaComposite.SrcOver.derive((float) 0.8));
+                g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,alpha));
                 super.paintComponent(g);
             }
         };
@@ -112,18 +112,32 @@ public class Login extends JFrame{
         pass.setBounds(180,140,220,30);
         submit.setBounds(190,200,70,30);
         reset.setBounds(290,200,70,30);
-        add(user_label);
-        add(user);
-        add(pass_label);
-        add(pass);
-        add(submit);
-        add(reset);
-        setVisible(true);
+        start = System.nanoTime()/1000000;
+        timer = new Timer(50,(e) -> {
+            time = System.nanoTime()/1000000 - start;
+            alpha = time/3000;
+            System.out.println(time);
+            System.out.println(alpha);
+            if (alpha > 1){
+                timer.stop();
+                alpha = 1;
+                add(user_label);
+                add(user);
+                add(pass_label);
+                add(pass);
+                add(submit);
+                add(reset);
+                repaint();
+            }else {
+                repaint();
+            }
+        });
+        timer.start();
     }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(()->{
-            new Login();
+            new Login().setVisible(true);
         });
     }
 }
