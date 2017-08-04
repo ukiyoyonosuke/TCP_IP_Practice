@@ -1,6 +1,7 @@
 package Portfolio.View;
 
 import Portfolio.Control.ConnectDB;
+import Portfolio.Control.Validation;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -78,20 +79,24 @@ public class Login extends JFrame{
         submit.addActionListener((e) -> {
             name = user.getText();
             String passWord = String.valueOf(pass.getPassword());
-            ResultSet resultSet = ConnectDB.createSQL("select user pass from USER where user = " + name + " and pass = " + passWord );
+//            ResultSet resultSet = null;
+//            try {
+//                resultSet = ConnectDB.createSQL("select user pass from USER1 where user = " + name + " and pass = " + passWord );
+//            } catch (Exception e1) {
+//                e1.printStackTrace();
+//            }
             try {
-                ResultSetMetaData data = resultSet.getMetaData();
-                if (data.getColumnCount() <= 0 || data.getColumnCount() >1){
-                    JOptionPane.showMessageDialog(this,"UserID　もしくは PassWor　が正しくないようです。\n" +
-                            "再度入力してください");
-                }else {
-                    this.setVisible(false);
-                    new Index(name,true);
-                }
-            } catch (SQLException e1) {
+                ResultSet resultSet = ConnectDB.createSQL("select name,pass from USER1 where name = " + name + " and pass = " + passWord );
+                System.out.println(resultSet.getMetaData().getColumnCount());
+            } catch (Exception e1) {
                 e1.printStackTrace();
             }
-
+            if(Validation.checkID(name,passWord)){
+                System.out.println(true);
+            }else {
+                JOptionPane.showMessageDialog(this,"UserID　もしくは PassWordが正しくないようです。\n" +
+                        "再度入力してください");
+            }
         });
         reset = new JButton("Cancel"){
             @Override
