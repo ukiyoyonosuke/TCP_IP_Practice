@@ -86,8 +86,8 @@ public class Login extends JFrame{
 //                e1.printStackTrace();
 //            }
             try {
-                ResultSet resultSet = ConnectDB.createSQL("select name,pass from USER1 where name = " + name + " and pass = " + passWord );
-                System.out.println(resultSet.getMetaData().getColumnCount());
+                ResultSet resultSet = ConnectDB.createSQL("select name,pass from USER1 where name = '" + name + "' and pass = '" + passWord + "'");
+                System.out.println(resultSet.getRow());
             } catch (Exception e1) {
                 e1.printStackTrace();
             }

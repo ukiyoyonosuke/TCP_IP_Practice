@@ -8,25 +8,36 @@ import java.sql.ResultSetMetaData;
  */
 public class Validation {
     ResultSetMetaData resultSetMetaData;
-    public static Boolean checkID(String user,String pass){
-        if(user != null && pass!=null){
-            try {
-                ResultSet resultSet = ConnectDB.createSQL("select * from USER1 where name = " + user + " and pass = " + pass );
-                System.out.println(resultSet.getMetaData().getColumnCount());
-                if (resultSet.getMetaData().getColumnCount() == 1){
-                    return true;
-                }else {
-                    return false;
-                }
-            } catch (Exception e) {
+    public static boolean checkID(String user,String pass){
+        if(user != null && pass!=null) try {
+            ResultSet resultSet = ConnectDB.createSQL("select * from USER1 where name = '" + user + "' and pass = '" + pass +"' ");
+//            ResultSet resultSet = ConnectDB.createSQL("select * from USER1 where name = 'a' and pass = 'a'" );
+            System.out.println(resultSet.getRow());
+            if (resultSet.next()) {
+                System.out.println(resultSet.getRow());
+                return true;
+            } else {
                 return false;
             }
-        }else {
+        } catch (Exception e) {
+            return false;
+        }
+        else {
             return false;
         }
     }
-
+    public static boolean is_Admin(String user){
+        try {
+            ResultSet resultSet = ConnectDB.createSQL("select * from USER1 where name = '" + user + "'");
+            if (resultSet.getBoolean(1))
+                return true;
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
     public static void main(String[] args) {
-        checkID("user1","bbbb");
+        System.out.println(checkID("user1","bbbb"));
     }
 }
