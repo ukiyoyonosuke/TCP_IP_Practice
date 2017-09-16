@@ -29,14 +29,14 @@ public class ConnectDB {
             createSQL("select * from user1");
             ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
             List<String> fields = new ArrayList<String>();
-            System.out.println(resultSetMetaData.getColumnCount());
-            System.out.println(resultSetMetaData.getColumnName(1));
-            System.out.println(resultSetMetaData.getSchemaName(1));
-            System.out.println(resultSetMetaData.getCatalogName(1));
-            System.out.println(resultSetMetaData.getColumnType(1));
-            System.out.println(resultSetMetaData.getColumnTypeName(1));
-            System.out.println(resultSetMetaData.getColumnClassName(1));
-            System.out.println(resultSet.getFetchSize());
+//            System.out.println(resultSetMetaData.getColumnCount());
+//            System.out.println(resultSetMetaData.getColumnName(1));
+//            System.out.println(resultSetMetaData.getSchemaName(1));
+//            System.out.println(resultSetMetaData.getCatalogName(1));
+//            System.out.println(resultSetMetaData.getColumnType(1));
+//            System.out.println(resultSetMetaData.getColumnTypeName(1));
+//            System.out.println(resultSetMetaData.getColumnClassName(1));
+//            System.out.println(resultSet.getFetchSize());
             for(int i = 1; i < resultSetMetaData.getColumnCount(); i++){
                 fields.add(resultSetMetaData.getColumnName(i));
             }
