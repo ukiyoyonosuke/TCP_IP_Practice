@@ -52,9 +52,18 @@ public class Practice04 extends JFrame {
             });
             add(new JCheckBox());
             add(label);
-            System.out.println(image);
-            trash = new JButton(new ImageIcon(image));
+//            System.out.println(image);
+            trash = new JButton(new ImageIcon(image)){
+                @Override
+                protected void paintComponent(Graphics g) {
+                    if (isSelected()){
+                        setBackground(Color.BLUE);
+                    }
+                    super.paintComponent(g);
+                }
+            };
             add(trash);
+            trash.addActionListener((e) -> System.out.println(e));
             trash.setPreferredSize(new Dimension(68,50));
         }
 
@@ -63,6 +72,9 @@ public class Practice04 extends JFrame {
             label.setText(value.toString());
             if (isSelected){
                 setBackground(Color.blue);
+//                grabFocus();
+                trash.grabFocus();
+//                setRequestFocusEnabled(true);
                 System.out.println(value);
             }else {
                 setBackground(Color.white);
